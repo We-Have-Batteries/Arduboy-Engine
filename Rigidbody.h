@@ -1,7 +1,6 @@
 #ifndef RIGIDBODY_H
 #define RIGIDBODY_H
 
-//#include <cstdint>
 #include "flagsapi.h"
 
 /// Stores and provides the velocity of a GameObject
