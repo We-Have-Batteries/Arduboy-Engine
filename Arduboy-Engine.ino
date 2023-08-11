@@ -106,7 +106,7 @@ void loop() {
   // (positions start at 0, 0)
   Setup::arduboy.setCursor(0, 0);
 
-  GameWorld::Initialize();
+  // GameWorld::Initialize();
 
   // then we print to screen what is in the Quotation marks ""
   if (Input::GetKeyDown(Input::UP))
@@ -130,11 +130,20 @@ void loop() {
   //   counter++;
   // }
 
-  if (GameWorld::worldObjects.size() < 30)
-    MapEditor::CreateMap(MapEditor::map1, 0, 0);
+  // if (GameWorld::worldObjects.size() < 30)
+  //   MapEditor::CreateMap(MapEditor::map1, 0, 0);
 
-  Setup::tinyfont.print("WorldObject size: ");
-  Setup::tinyfont.print(GameWorld::worldObjects.size());
+  // The Arduino Vector library is the world's crappiest resizing thing. You need to give it an area to store the data, but it has to already be a set size!
+  // This means that you have to already be storing the space itself. Very silly and very dumb, as you're not actually saving any memory space.
+  // Additionally, you can't use a pointer with no values. Pushing back does nothing to it.
+  // Will either need to make a linked list class or my own resizing vector.
+  int* storage;
+  Vector<int> temp;
+  temp.setStorage(storage, 30, 5);
+  temp.push_back(5);
+
+  Setup::tinyfont.print("Temp size: ");
+  Setup::tinyfont.print(temp.size());
 
   for (int i = 0; i < GameWorld::worldObjects.size(); i++){
     // if (GameWorld::worldObjects[i].GetX() != Image().GetX()){

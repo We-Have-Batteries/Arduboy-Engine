@@ -40,23 +40,21 @@ void GameWorld::AddObject(Image* newObject) {
     //std::cout << "Adding new object to worldObjects\n";
     newObject->Start();
     worldObjects.push_back(newObject);
-    Setup::tinyfont.print("Adding Image\n");
+    // Setup::tinyfont.print("Adding Image\n");
 }
 void GameWorld::AddObject(CollidableImage* newObject) {
     //std::cout << "Adding new object to worldObjects\n";
     newObject->Start();
     worldObjects.push_back(newObject);
     Physics::AddBoundary(newObject);
-    Setup::tinyfont.print("World objects length: ");
-    Setup::tinyfont.print(worldObjects.size());
-    Setup::tinyfont.print("\n");
+    // Setup::tinyfont.print("Adding CI\n");
 }
 void GameWorld::AddObject(GameObject* newObject) {
     //std::cout << "Adding new object to worldObjects\n";
     newObject->Start();
     worldObjects.push_back(newObject);
     Physics::AddPhysicsBody(newObject);
-    Setup::tinyfont.print("Adding GO\n");
+    // Setup::tinyfont.print("Adding GO\n");
 }
 
 void GameWorld::PrintWorldObjects() {
