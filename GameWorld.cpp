@@ -1,9 +1,10 @@
 #include "GameWorld.h"
+#include "Setup.h"
 #include <Vector.h>
 
 short GameWorld::worldX = 0;
 short GameWorld::worldY = 0;
-Vector<GameObject*> GameWorld::worldObjects;
+Vector<Image*> GameWorld::worldObjects;
 
 float GameWorld::GetWorldX() {
     return (float)worldX / 100.0f;
@@ -30,15 +31,32 @@ void GameWorld::Initialize() {
     worldObjects.begin();
     SetWorldX(0);
     SetWorldY(0);
+    Setup::tinyfont.print("GameWorld is initializing\n");
 
     Physics::Initialize();
 }
 
+void GameWorld::AddObject(Image* newObject) {
+    //std::cout << "Adding new object to worldObjects\n";
+    newObject->Start();
+    worldObjects.push_back(newObject);
+    Setup::tinyfont.print("Adding Image\n");
+}
+void GameWorld::AddObject(CollidableImage* newObject) {
+    //std::cout << "Adding new object to worldObjects\n";
+    newObject->Start();
+    worldObjects.push_back(newObject);
+    Physics::AddBoundary(newObject);
+    Setup::tinyfont.print("World objects length: ");
+    Setup::tinyfont.print(worldObjects.size());
+    Setup::tinyfont.print("\n");
+}
 void GameWorld::AddObject(GameObject* newObject) {
     //std::cout << "Adding new object to worldObjects\n";
     newObject->Start();
     worldObjects.push_back(newObject);
     Physics::AddPhysicsBody(newObject);
+    Setup::tinyfont.print("Adding GO\n");
 }
 
 void GameWorld::PrintWorldObjects() {

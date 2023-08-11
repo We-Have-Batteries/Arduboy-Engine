@@ -1,8 +1,5 @@
 #include "Physics.h"
-//#include <algorithm>
-//#include <iostream>
 
-//Vector<ContactPair*> Physics::pairs;
 Vector<GameObject*> Physics::physicsBodies;
 Vector<CollidableImage*> Physics::boundaries;
 
@@ -59,8 +56,8 @@ void Physics::RemovePhysicsBody(GameObject physicsBody) {
 	}
 }
 
-void Physics::AddBoundary(CollidableImage boundary) {
-	boundaries.push_back(&boundary);
+void Physics::AddBoundary(CollidableImage* boundary) {
+	boundaries.push_back(boundary);
 }
 
 void Physics::RemoveBoundaries(CollidableImage boundary) {

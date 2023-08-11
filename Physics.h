@@ -1,8 +1,6 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
-//#include "ContactPair.h"
-//#include "TickContact.h"
 #include "GameObject.h"
 #include <Vector.h>
 
@@ -28,7 +26,7 @@ public:
 
 	static void RemovePhysicsBody(GameObject physicsBody);
 
-	static void AddBoundary(CollidableImage boundary);
+	static void AddBoundary(CollidableImage* boundary);
 
 	static void RemoveBoundaries(CollidableImage boundary);
 

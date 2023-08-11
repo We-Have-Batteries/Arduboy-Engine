@@ -1,6 +1,7 @@
 #ifndef GAMEWORLD_H
 #define GAMEWORLD_H
 
+#include "GameObject.h"
 #include "Physics.h"
 #include <Vector.h>
 
@@ -9,7 +10,7 @@
 
 class GameWorld {
 public:
-    static Vector<GameObject*> worldObjects;
+    static Vector<Image*> worldObjects;
     const static short worldWidth = 128;
     const static short worldHeight = 64;
 
@@ -20,6 +21,8 @@ public:
 
     static void Initialize();
 
+    static void AddObject(Image* newObject);
+    static void AddObject(CollidableImage* newObject);
     static void AddObject(GameObject* newObject);
 
     static void PrintWorldObjects();

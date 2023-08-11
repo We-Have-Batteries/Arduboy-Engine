@@ -10,26 +10,36 @@
 #include "Tinyfont.h"
 #include "AbstractObject.h"
 #include "Prefabs.h"
+#include "MapEditor.h"
+#include "Setup.h"
 #include <Arduboy2.h>
 
 
-Arduboy2 arduboy;
-Tinyfont tinyfont = Tinyfont(arduboy.sBuffer, Arduboy2::width(), Arduboy2::height());
+// Arduboy2 arduboy;
+// Tinyfont tinyfont = Tinyfont(arduboy.sBuffer, Arduboy2::width(), Arduboy2::height());
+Image objects[5];
+int counter = 0;
 
 
 void setup() {
-  arduboy.begin();
-  arduboy.clear();
-  arduboy.setFrameRate(1);
-
-  CollidableImage img = CollidableImage();
+  Setup::arduboy.begin();
+  Setup::arduboy.clear();
+  Setup::arduboy.setFrameRate(1);
   
   // put your setup code here, to run once:
   GameWorld::Initialize();
+
+  MapEditor::CreateMap(MapEditor::map1, 0, 0);
+
+  // for (int i = 0; i < 5; i++){
+  //   objects[i] = NULL;
+  // }
+
+  /*
   GameObject* go1 = new GameObject();
-  go1->SetX(25);
+  // go1->SetX(25);
   GameObject* go2 = new GameObject();
-  go2->SetX(19);
+  // go2->SetX(19);
   GameObject go3 = GameObject();
   GameObject go4 = GameObject();
   GameObject go5 = GameObject();
@@ -44,13 +54,9 @@ void setup() {
   go3.SetY(35);
   go4.SetY(45);
   go5.SetY(55);
+  */
 
   //GameWorld::PrintWorldObjects();
-  
-  for (int i = 0; i < GameWorld::worldObjects.size(); i++) {
-      //std::cout << "Obj " << i << " location: " << GameWorld::worldObjects[i] << "\n";
-  }
-  
 
   Physics::ApplyPhysics();
 
@@ -70,56 +76,83 @@ void setup() {
 
 void loop() {
 
-  if(!(arduboy.nextFrame())) {
+  if(!(Setup::arduboy.nextFrame())) {
     return;
   }
   
   // put your main code here, to run repeatedly:
-  arduboy.pollButtons();
+  Setup::arduboy.pollButtons();
 
   uint8_t pressedButtons = 0b00000000;
 
-  if (arduboy.pressed(UP_BUTTON))
+  if (Setup::arduboy.pressed(UP_BUTTON))
     pressedButtons |= 1 << 7;
-  if (arduboy.pressed(DOWN_BUTTON))
+  if (Setup::arduboy.pressed(DOWN_BUTTON))
     pressedButtons |= 1 << 6;
-  if (arduboy.pressed(LEFT_BUTTON))
+  if (Setup::arduboy.pressed(LEFT_BUTTON))
     pressedButtons |= 1 << 5;
-  if (arduboy.pressed(RIGHT_BUTTON))
+  if (Setup::arduboy.pressed(RIGHT_BUTTON))
     pressedButtons |= 1 << 4;
-  if (arduboy.pressed(B_BUTTON))
+  if (Setup::arduboy.pressed(B_BUTTON))
     pressedButtons |= 1 << 3;
-  if (arduboy.pressed(A_BUTTON))
+  if (Setup::arduboy.pressed(A_BUTTON))
     pressedButtons |= 1 << 2;
 
   Input::UpdateKeys(pressedButtons);
 
-  arduboy.clear();
-  tinyfont.setCursor(4, 9);
+  Setup::arduboy.clear();
+  Setup::tinyfont.setCursor(0, 0);
     // we set our cursor 5 pixels to the right and 10 down from the top
   // (positions start at 0, 0)
-  arduboy.setCursor(4, 9);
+  Setup::arduboy.setCursor(0, 0);
+
+  GameWorld::Initialize();
 
   // then we print to screen what is in the Quotation marks ""
   if (Input::GetKeyDown(Input::UP))
-    tinyfont.print(F("UP WAS LET GO\n"));
+    Setup::tinyfont.print(F("UP WAS LET GO\n"));
   else if (Input::GetKeyUp(Input::UP))
-    tinyfont.print(F("UP WAS PRESSED\n"));
+    Setup::tinyfont.print(F("UP WAS PRESSED\n"));
   else if (Input::GetKey(Input::UP))
-    tinyfont.print(F("UP IS BEING HELD DOWN\n"));
+    Setup::tinyfont.print(F("UP IS BEING HELD DOWN\n"));
 
-  Collider col = Collider();
-  Image img = Image(); // 9 bytes -> can have 118 objects in memory AT MOST at one time
-  CollidableImage ci = CollidableImage(); // 13 bytes -> can have 118 objects in memory AT MOST at one time
-  GameObject go = GameObject(); // 17 bytes -> can have 90 total objects in memory AT MOST at one time
+  // Collider col = Collider();
+  // Image img = Image(); // 9 bytes -> can have 118 objects in memory AT MOST at one time
+  // CollidableImage ci = CollidableImage(); // 13 bytes -> can have 118 objects in memory AT MOST at one time
+  // GameObject go = GameObject(); // 17 bytes -> can have 90 total objects in memory AT MOST at one time
   uint8_t* imgPtr = nullptr;
 
-  int size = sizeof(go);
-  img.Update();
+  // int size = sizeof(go);
+  // img.Update();
 
-  tinyfont.print(F("Img x position:\n"));
-  tinyfont.print(size);
+  // if (counter < 5){
+  //   objects[counter] = *MapEditor::GetBrick();
+  //   counter++;
+  // }
 
-  arduboy.display();
+  if (GameWorld::worldObjects.size() < 30)
+    MapEditor::CreateMap(MapEditor::map1, 0, 0);
+
+  Setup::tinyfont.print("WorldObject size: ");
+  Setup::tinyfont.print(GameWorld::worldObjects.size());
+
+  for (int i = 0; i < GameWorld::worldObjects.size(); i++){
+    // if (GameWorld::worldObjects[i].GetX() != Image().GetX()){
+      // GameWorld::worldObjects[i].SetX((i+1)*10);
+      Setup::tinyfont.print("Object ");
+      Setup::tinyfont.print(i);
+      Setup::tinyfont.print("x: ");
+      Setup::tinyfont.print(objects[i].GetX());
+      Setup::tinyfont.print("\n");
+    // }
+  }
+
+  // float size = MapEditor::GetBrick()->GetX();
+
+  // Setup::tinyfont.print(F("Img x position:"));
+  // Setup::tinyfont.print(size);
+  // Setup::tinyfont.print("\n");
+
+  Setup::arduboy.display();
   return;
 }

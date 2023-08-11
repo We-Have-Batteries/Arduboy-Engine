@@ -1,5 +1,6 @@
-#include "Image.h";
+#include "Image.h"
 #include "CollidableImage.h"
+#include "Setup.h"
 
 Image::Image(){
   image = nullptr;
@@ -35,53 +36,55 @@ Image::Image(uint8_t* img, float x, float y){
 
 /// Position is only accurate up to 2 decimals. Further decimals are truncated
 float Image::GetX() {
-    // If it's a positive x, return it casted plus the decimal
-    if (flags & 1 << 1) return (float)x / 100.0f;
-    // If it's a negative x, return it casted plus decimal times -1
-    else return -1 * float(x) / 100.0f;
+  // If it's a positive x, return it casted plus the decimal
+  if (flags & 1 << 1) return (float)x / 100.0f;
+  // If it's a negative x, return it casted plus decimal times -1
+  else return -1 * float(x) / 100.0f;
 }
 
 /// Position is only accurate up to 2 decimals. Further decimals are truncated
 float Image::GetY() {
-    // If it's a positive x, return it casted plus the decimal
-    if (flags & 1 << 0) return (float)y / 100.0f;
-    // If it's a negative x, return it casted plus decimal times -1
-    else return -1 * float(y) / 100.0f;
+  // If it's a positive x, return it casted plus the decimal
+  if (flags & 1 << 0) return (float)y / 100.0f;
+  // If it's a negative x, return it casted plus decimal times -1
+  else return -1 * float(y) / 100.0f;
 }
 
 /// Position is only accurate up to 2 decimals. Further decimals are truncated. Max value is 655.35
 void Image::SetX(float position) {
-    if (position > 655.35f) position = 655.35f;
-    else if (position < -655.35f) position = -655.35f;
-    if (position < 0) {
-        position *= -1;
-        // Sets the x to be negative
-        flags &= ~(1 << 1);
-    }
-    else {
-        // Sets the x to be positive
-        flags |= 1 << 1;
-    }
-    x = (int)(position * 100);
+  if (position > 655.35f) position = 655.35f;
+  else if (position < -655.35f) position = -655.35f;
+  if (position < 0) {
+      position *= -1;
+      // Sets the x to be negative
+      flags &= ~(1 << 1);
+  }
+  else {
+      // Sets the x to be positive
+      flags |= 1 << 1;
+  }
+  x = (int)(position * 100);
 }
 
 /// Position is only accurate up to 2 decimals. Further decimals are truncated. Max value is 655.35
 void Image::SetY(float position) {
-    if (position > 655.35f) position = 655.35f;
-    else if (position < -655.35f) position = -655.35f;
-    if (position < 0) {
-        position *= -1;
-        // Sets the y to be negative
-        flags &= ~(1 << 0);
-    }
-    else {
-        // Sets the y to be positive
-        flags |= 1 << 0;
-    }
-    y = (int)(position * 100);
+  if (position > 655.35f) position = 655.35f;
+  else if (position < -655.35f) position = -655.35f;
+  if (position < 0) {
+      position *= -1;
+      // Sets the y to be negative
+      flags &= ~(1 << 0);
+  }
+  else {
+      // Sets the y to be positive
+      flags |= 1 << 0;
+  }
+  y = (int)(position * 100);
 }
 
-void Image::Start(){}
+void Image::Start(){
+  Setup::tinyfont.print("Image is starting\n");
+}
 
 void Image::Update(){
   if (Input::GetKey(Input::UP)){
