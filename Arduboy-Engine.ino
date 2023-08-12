@@ -117,27 +117,33 @@ void loop() {
 
   // GameWorld::Initialize();
 
-  // then we print to screen what is in the Quotation marks ""
-  if (Input::GetKeyDown(Input::UP))
-    Setup::tinyfont.print(F("UP WAS LET GO\n"));
-  else if (Input::GetKeyUp(Input::UP))
-    Setup::tinyfont.print(F("UP WAS PRESSED\n"));
-  else if (Input::GetKey(Input::UP))
-    Setup::tinyfont.print(F("UP IS BEING HELD DOWN\n"));
+  // if (Input::GetKeyUp(Input::UP))
+  //   Setup::tinyfont.print(F("UP WAS LET GO\n"));
+  // else if (Input::GetKeyDown(Input::UP))
+  //   Setup::tinyfont.print(F("UP WAS PRESSED\n"));
+  // else if (Input::GetKey(Input::UP))
+  //   Setup::tinyfont.print(F("UP IS BEING HELD DOWN\n"));
+
+  if (Input::GetKeyDown(Input::UP) && counter < 29){
+    intResizeArr.Push((counter+1) * 10);
+    counter++;
+  }
+
+  if (Input::GetKeyDown(Input::DOWN) && counter > 1){
+    intResizeArr.Remove(intResizeArr[0]);
+    counter--;
+  }
 
   // Collider col = Collider();
   // Image img = Image(); // 9 bytes -> can have 118 objects in memory AT MOST at one time
   // CollidableImage ci = CollidableImage(); // 13 bytes -> can have 118 objects in memory AT MOST at one time
   // GameObject go = GameObject(); // 17 bytes -> can have 90 total objects in memory AT MOST at one time
-  uint8_t* imgPtr = nullptr;
+  // uint8_t* imgPtr = nullptr;
 
   // int size = sizeof(go);
   // img.Update();
 
-  if (counter < 29){
-    intResizeArr.Push((counter+1) * 10);
-    counter++;
-  }
+  
 
   // if (GameWorld::worldObjects.size() < 30)
   //   MapEditor::CreateMap(MapEditor::map1, 0, 0);
@@ -167,7 +173,7 @@ void loop() {
   }
 
   for (int i = 0; i < intResizeArr.GetSize(); i++){
-    if (i % intResizeArr.spacingAmount != 0) continue;
+    // if (i % intResizeArr.spacingAmount != 0) continue;
     Setup::tinyfont.print("Object ");
     Setup::tinyfont.print(i);
     Setup::tinyfont.print(" value: ");

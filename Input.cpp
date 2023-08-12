@@ -5,8 +5,8 @@ uint8_t Input::pressedThisFrame = 0b00000000;
 uint8_t Input::releasedThisFrame = 0b00000000;
 
 void Input::UpdateKeys(uint8_t keysPressed){
-  pressedThisFrame = isPressed & ~keysPressed;
-  releasedThisFrame = ~isPressed & keysPressed; 
+  pressedThisFrame = ~isPressed & keysPressed;
+  releasedThisFrame = isPressed & ~keysPressed; 
   isPressed = keysPressed;
 }
 
