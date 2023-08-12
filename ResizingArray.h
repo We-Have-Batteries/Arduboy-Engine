@@ -12,10 +12,10 @@ public:
     currentIndex = 0;
     size = spacingAmount;
     this->spacingAmount = spacingAmount;
-    arr = new T[spacingAmount];
+    arr = new T*[spacingAmount];
   }
 
-  Push(T value){
+  Push(T* value){
     // Leaving this here for later because it's useful for comparing memory addresses!
     // Maybe make a static helper function somewhere as a tool!
     // uintptr_t address = reinterpret_cast<uintptr_t>(arr);
@@ -23,14 +23,14 @@ public:
     // Setup::tinyfont.print(address);
     // Setup::tinyfont.print("\n");
 
-    Setup::tinyfont.print("CurIndex minus size: ");
-    Setup::tinyfont.print(((int)currentIndex - (int)size));
-    Setup::tinyfont.print("\n");
+    // Setup::tinyfont.print("CurIndex minus size: ");
+    // Setup::tinyfont.print(((int)currentIndex - (int)size));
+    // Setup::tinyfont.print("\n");
 
     // if we hit the end of the array, make it larger
     if ((int)currentIndex - (int)size >= 0) {
       // Add spacing to the array
-      T* newArr = new T[size + spacingAmount];
+      T** newArr = new T*[size + spacingAmount];
       // Should copy all elements from arr into newArr
       memcpy(newArr, arr, size * sizeof(T*));
       delete[] arr;
@@ -47,19 +47,19 @@ public:
     }
 
 
-    Setup::tinyfont.print("Size: ");
-    Setup::tinyfont.print(size);
-    Setup::tinyfont.print("\n");
-    Setup::tinyfont.print("Current index: ");
-    Setup::tinyfont.print(currentIndex);
-    Setup::tinyfont.print("\n");
+    // Setup::tinyfont.print("Size: ");
+    // Setup::tinyfont.print(size);
+    // Setup::tinyfont.print("\n");
+    // Setup::tinyfont.print("Current index: ");
+    // Setup::tinyfont.print(currentIndex);
+    // Setup::tinyfont.print("\n");
 
     arr[currentIndex] = value;
     currentIndex++;
   }
 
-  void Remove(T value, bool destructive = true){
-    for (int i = 0; i < size; i++){
+  void Remove(T* value, bool destructive = true){
+    for (int i = 0; i < size-1; i++){
       // If we found the item
       if (arr[i] == value){
         // Clear the data here
@@ -70,15 +70,26 @@ public:
         //   arr[j] = arr[j+1];
         // }
         // Copy the elements above this point down to this spot
-        memcpy(arr+i, arr, (size-i) * sizeof(T));
-        size--;
+        memcpy(arr+i, arr+i+1, (size-i) * sizeof(T*));
         currentIndex--;
         break;
       }
     }
     // If we've removed enough objects to be further than 2 spacings away
-    if ((int)currentIndex - (int)size < spacingAmount*-2){
-      T* newArr = new T[size - spacingAmount];
+    if ((int)size - (int)currentIndex > spacingAmount*2){
+      Setup::tinyfont.print("Size minus index < space*2\n");
+      Setup::tinyfont.print("Size: ");
+      Setup::tinyfont.print(size);
+      Setup::tinyfont.print("\n");
+      Setup::tinyfont.print("Index: ");
+      Setup::tinyfont.print(currentIndex);
+      Setup::tinyfont.print("\n");
+      Setup::tinyfont.print("Space: ");
+      Setup::tinyfont.print(spacingAmount);
+      Setup::tinyfont.print("\n");
+      // Setup::tinyfont.print(((int)currentIndex - (int)size));
+      // Setup::tinyfont.print("\n");
+      T** newArr = new T*[size - spacingAmount];
       // Should copy all elements from arr into newArr
       memcpy(newArr, arr, size * sizeof(T*));
       delete[] arr;
@@ -114,7 +125,7 @@ public:
 
   // thing here
 private:
-  T* arr;
+  T** arr;
   uint16_t currentIndex;
   uint16_t size;
 };
