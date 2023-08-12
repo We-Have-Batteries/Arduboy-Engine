@@ -65,36 +65,23 @@ public:
         // Clear the data here
         if (destructive)
           delete arr[i];
-        // // Fill everything from above downwards
-        // for (int j = i; j < size-1; j++){
-        //   arr[j] = arr[j+1];
-        // }
+
         // Copy the elements above this point down to this spot
         memcpy(arr+i, arr+i+1, (size-i) * sizeof(T*));
         currentIndex--;
         break;
       }
     }
+
     // If we've removed enough objects to be further than 2 spacings away
-    if ((int)size - (int)currentIndex > spacingAmount*2){
-      Setup::tinyfont.print("Size minus index < space*2\n");
-      Setup::tinyfont.print("Size: ");
-      Setup::tinyfont.print(size);
-      Setup::tinyfont.print("\n");
-      Setup::tinyfont.print("Index: ");
-      Setup::tinyfont.print(currentIndex);
-      Setup::tinyfont.print("\n");
-      Setup::tinyfont.print("Space: ");
-      Setup::tinyfont.print(spacingAmount);
-      Setup::tinyfont.print("\n");
-      // Setup::tinyfont.print(((int)currentIndex - (int)size));
-      // Setup::tinyfont.print("\n");
-      T** newArr = new T*[size - spacingAmount];
-      // Should copy all elements from arr into newArr
-      memcpy(newArr, arr, size * sizeof(T*));
+    if ((int)currentIndex < (int)size - spacingAmount*2){
+      // Remove spacing amount spots
+      size -= spacingAmount;
+      T** newArr = new T*[size];
+      // Copies all elements from arr into newArr
+      memcpy(newArr, arr, currentIndex * sizeof(T*));
       delete[] arr;
       arr = newArr;
-      size -= spacingAmount;
     }
   }
 
@@ -113,7 +100,7 @@ public:
     return NULL;
   }
 
-  T operator[](int index) {
+  T* operator[](int index) {
     if (index >= 0 && index < currentIndex) {
       return arr[index];
     }

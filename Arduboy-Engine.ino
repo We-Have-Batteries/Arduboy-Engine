@@ -125,7 +125,9 @@ void loop() {
   //   Setup::tinyfont.print(F("UP IS BEING HELD DOWN\n"));
 
   if (Input::GetKeyDown(Input::UP) && counter < 29){
-    intResizeArr.Push((counter+1) * 10);
+    int* tempPtr = new int;
+    *tempPtr = (counter+1) * 10;
+    intResizeArr.Push(tempPtr);
     counter++;
   }
 
@@ -177,7 +179,7 @@ void loop() {
     Setup::tinyfont.print("Object ");
     Setup::tinyfont.print(i);
     Setup::tinyfont.print(" value: ");
-    Setup::tinyfont.print(intResizeArr[i]);
+    Setup::tinyfont.print(*intResizeArr[i]);
     Setup::tinyfont.print("\n");
   }
 
