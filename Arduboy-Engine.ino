@@ -4,7 +4,6 @@
 #include "Rigidbody.h"
 #include "GameObject.h"
 #include "GameWorld.h"
-//#include "ContactPair.h"
 #include "Physics.h"
 #include "Input.h"
 #include "Tinyfont.h"
@@ -12,6 +11,7 @@
 #include "Prefabs.h"
 #include "MapEditor.h"
 #include "Setup.h"
+#include "ResizingArray.h"
 #include <Arduboy2.h>
 
 
@@ -74,11 +74,20 @@ void setup() {
   */
 }
 
-void loop() {
+ResizingArray<int> intResizeArr(5);
+bool nextFrame = false;
 
-  if(!(Setup::arduboy.nextFrame())) {
+void loop() {
+  if (!nextFrame){
+    Setup::arduboy.pollButtons();
+    if (Setup::arduboy.pressed(RIGHT_BUTTON)) nextFrame = true;
+  }
+
+  if(!(Setup::arduboy.nextFrame()) || !nextFrame) {
     return;
   }
+
+  nextFrame = false;
   
   // put your main code here, to run repeatedly:
   Setup::arduboy.pollButtons();
@@ -125,10 +134,10 @@ void loop() {
   // int size = sizeof(go);
   // img.Update();
 
-  // if (counter < 5){
-  //   objects[counter] = *MapEditor::GetBrick();
-  //   counter++;
-  // }
+  if (counter < 29){
+    intResizeArr.Push((counter+1) * 10);
+    counter++;
+  }
 
   // if (GameWorld::worldObjects.size() < 30)
   //   MapEditor::CreateMap(MapEditor::map1, 0, 0);
@@ -137,23 +146,33 @@ void loop() {
   // This means that you have to already be storing the space itself. Very silly and very dumb, as you're not actually saving any memory space.
   // Additionally, you can't use a pointer with no values. Pushing back does nothing to it.
   // Will either need to make a linked list class or my own resizing vector.
-  int* storage;
-  Vector<int> temp;
-  temp.setStorage(storage, 30, 5);
-  temp.push_back(5);
+  // int* storage;
+  // Vector<int> temp;
+  // temp.setStorage(storage, 30, 5);
+  // temp.push_back(5);
 
-  Setup::tinyfont.print("Temp size: ");
-  Setup::tinyfont.print(temp.size());
+  Setup::tinyfont.print("Array size: ");
+  Setup::tinyfont.print(intResizeArr.GetSize());
+  Setup::tinyfont.print("\n");
 
   for (int i = 0; i < GameWorld::worldObjects.size(); i++){
     // if (GameWorld::worldObjects[i].GetX() != Image().GetX()){
       // GameWorld::worldObjects[i].SetX((i+1)*10);
-      Setup::tinyfont.print("Object ");
-      Setup::tinyfont.print(i);
-      Setup::tinyfont.print("x: ");
-      Setup::tinyfont.print(objects[i].GetX());
-      Setup::tinyfont.print("\n");
     // }
+    Setup::tinyfont.print("Object ");
+    Setup::tinyfont.print(i);
+    Setup::tinyfont.print("x: ");
+    Setup::tinyfont.print(objects[i].GetX());
+    Setup::tinyfont.print("\n");
+  }
+
+  for (int i = 0; i < intResizeArr.GetSize(); i++){
+    if (i % intResizeArr.spacingAmount != 0) continue;
+    Setup::tinyfont.print("Object ");
+    Setup::tinyfont.print(i);
+    Setup::tinyfont.print(" value: ");
+    Setup::tinyfont.print(intResizeArr[i]);
+    Setup::tinyfont.print("\n");
   }
 
   // float size = MapEditor::GetBrick()->GetX();
