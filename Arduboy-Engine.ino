@@ -12,6 +12,7 @@
 #include "MapEditor.h"
 #include "Setup.h"
 #include "ResizingArray.h"
+#include "string.h"
 #include <Arduboy2.h>
 
 
@@ -74,7 +75,7 @@ void setup() {
   */
 }
 
-ResizingArray<int> intResizeArr(5);
+ResizingArray<int*> intResizeArr(5);
 bool nextFrame = false;
 
 void loop() {
@@ -127,6 +128,11 @@ void loop() {
   if (Input::GetKeyDown(Input::UP) && counter < 29){
     int* tempPtr = new int;
     *tempPtr = (counter+1) * 10;
+
+    Setup::tinyfont.print(F("Adding address: "));
+    Setup::tinyfont.print(Setup::PtrToInt(tempPtr));
+    Setup::tinyfont.print(F("\n"));
+    
     intResizeArr.Push(tempPtr);
     counter++;
   }
@@ -159,35 +165,39 @@ void loop() {
   // temp.setStorage(storage, 30, 5);
   // temp.push_back(5);
 
-  Setup::tinyfont.print("Array size: ");
+  Setup::tinyfont.print(F("AS: "));
   Setup::tinyfont.print(intResizeArr.GetSize());
-  Setup::tinyfont.print("\n");
+  Setup::tinyfont.print(F(", CI: "));
+  Setup::tinyfont.print(intResizeArr.GetCurIndex());
+  Setup::tinyfont.print(F(", FM: "));
+  Setup::tinyfont.print(Setup::FreeMemory(2560));
+  Setup::tinyfont.print(F("\n"));
 
   for (int i = 0; i < GameWorld::worldObjects.size(); i++){
     // if (GameWorld::worldObjects[i].GetX() != Image().GetX()){
       // GameWorld::worldObjects[i].SetX((i+1)*10);
     // }
-    Setup::tinyfont.print("Object ");
+    Setup::tinyfont.print(F("Object "));
     Setup::tinyfont.print(i);
-    Setup::tinyfont.print("x: ");
+    Setup::tinyfont.print(F("x: "));
     Setup::tinyfont.print(objects[i].GetX());
-    Setup::tinyfont.print("\n");
+    Setup::tinyfont.print(F("\n"));
   }
 
-  for (int i = 0; i < intResizeArr.GetSize(); i++){
+  for (int i = 0; i < intResizeArr.GetCurIndex(); i++){
     // if (i % intResizeArr.spacingAmount != 0) continue;
-    Setup::tinyfont.print("Object ");
+    Setup::tinyfont.print(F("Object "));
     Setup::tinyfont.print(i);
-    Setup::tinyfont.print(" value: ");
+    Setup::tinyfont.print(F(" value: "));
     Setup::tinyfont.print(*intResizeArr[i]);
-    Setup::tinyfont.print("\n");
+    Setup::tinyfont.print(F("\n"));
   }
 
   // float size = MapEditor::GetBrick()->GetX();
 
   // Setup::tinyfont.print(F("Img x position:"));
   // Setup::tinyfont.print(size);
-  // Setup::tinyfont.print("\n");
+  // Setup::tinyfont.print(F("\n"));
 
   Setup::arduboy.display();
   return;
