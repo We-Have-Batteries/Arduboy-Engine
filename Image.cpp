@@ -83,7 +83,7 @@ void Image::SetY(float position) {
 }
 
 void Image::Start(){
-  Setup::tinyfont.print("Image is starting\n");
+  Setup::tinyfont.print(F("Image is starting\n"));
 }
 
 void Image::Update(){

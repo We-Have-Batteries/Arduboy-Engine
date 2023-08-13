@@ -31,7 +31,7 @@ void GameWorld::Initialize() {
     worldObjects.begin();
     SetWorldX(0);
     SetWorldY(0);
-    Setup::tinyfont.print("GameWorld is initializing\n");
+    Setup::tinyfont.print(F("GameWorld is initializing\n"));
 
     Physics::Initialize();
 }
@@ -40,21 +40,21 @@ void GameWorld::AddObject(Image* newObject) {
     //std::cout << "Adding new object to worldObjects\n";
     newObject->Start();
     worldObjects.push_back(newObject);
-    // Setup::tinyfont.print("Adding Image\n");
+    // Setup::tinyfont.print(F("Adding Image\n"));
 }
 void GameWorld::AddObject(CollidableImage* newObject) {
     //std::cout << "Adding new object to worldObjects\n";
     newObject->Start();
     worldObjects.push_back(newObject);
     Physics::AddBoundary(newObject);
-    // Setup::tinyfont.print("Adding CI\n");
+    // Setup::tinyfont.print(F("Adding CI\n"));
 }
 void GameWorld::AddObject(GameObject* newObject) {
     //std::cout << "Adding new object to worldObjects\n";
     newObject->Start();
     worldObjects.push_back(newObject);
     Physics::AddPhysicsBody(newObject);
-    // Setup::tinyfont.print("Adding GO\n");
+    // Setup::tinyfont.print(F("Adding GO\n"));
 }
 
 void GameWorld::PrintWorldObjects() {

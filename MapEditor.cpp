@@ -17,7 +17,7 @@ void MapEditor::CreateMap(uint8_t* map, float xOffset, float yOffset){
   float xPos = xOffset;
   float yPos = yOffset;
 
-  // Setup::tinyfont.print("CreatingMap: ");
+  // Setup::tinyfont.print(F("CreatingMap: "));
 
   // Ignore the first two numbers, as that's our width and height of the map
   for (int i = 2; i < map[0] * map[1] + 2; i++){
