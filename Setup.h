@@ -8,7 +8,8 @@ class Setup{
 public:
   static Arduboy2 arduboy;
   static Tinyfont tinyfont;
-
+  static uintptr_t PtrToInt(void* ptr);
+  static int FreeMemory(int maxMemory);
 };
 
 #endif
