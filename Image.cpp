@@ -37,7 +37,7 @@ Image::Image(uint8_t* img, float x, float y){
 /// Position is only accurate up to 2 decimals. Further decimals are truncated
 float Image::GetX() {
   // If it's a positive x, return it casted plus the decimal
-  if (flags & 1 << 1) return (float)x / 100.0f;
+  if (signStorage & 1 << 7) return (float)x / 100.0f;
   // If it's a negative x, return it casted plus decimal times -1
   else return -1 * float(x) / 100.0f;
 }
@@ -45,7 +45,7 @@ float Image::GetX() {
 /// Position is only accurate up to 2 decimals. Further decimals are truncated
 float Image::GetY() {
   // If it's a positive x, return it casted plus the decimal
-  if (flags & 1 << 0) return (float)y / 100.0f;
+  if (signStorage & 1 << 6) return (float)y / 100.0f;
   // If it's a negative x, return it casted plus decimal times -1
   else return -1 * float(y) / 100.0f;
 }
@@ -57,11 +57,11 @@ void Image::SetX(float position) {
   if (position < 0) {
       position *= -1;
       // Sets the x to be negative
-      flags &= ~(1 << 1);
+      signStorage &= ~(1 << 7);
   }
   else {
       // Sets the x to be positive
-      flags |= 1 << 1;
+      signStorage |= 1 << 7;
   }
   x = (int)(position * 100);
 }
@@ -73,11 +73,11 @@ void Image::SetY(float position) {
   if (position < 0) {
       position *= -1;
       // Sets the y to be negative
-      flags &= ~(1 << 0);
+      signStorage &= ~(1 << 6);
   }
   else {
       // Sets the y to be positive
-      flags |= 1 << 0;
+      signStorage |= 1 << 6;
   }
   y = (int)(position * 100);
 }
@@ -101,3 +101,7 @@ void Image::OnTrigger(CollidableImage Other){}
 void Image::OnCollisionEnter(CollidableImage other){}
 
 void Image::OnCollision(CollidableImage other){}
+
+void Image::SetVelocity(float xSpeed, float ySpeed){}
+void Image::SetXSpeed(float xSpeed){}
+void Image::SetYSpeed(float ySpeed){}

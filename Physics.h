@@ -2,13 +2,13 @@
 #define PHYSICS_H
 
 #include "GameObject.h"
-#include <Vector.h>
+#include "ResizingArray.h"
 
 class Physics {
 public:
-	//static Vector<ContactPair*> pairs;
-	static Vector<GameObject*> physicsBodies;
-	static Vector<CollidableImage*> boundaries;
+	//static ResizingArrays<ContactPair*> pairs;
+	static ResizingArray<GameObject*> physicsBodies;
+	static ResizingArray<CollidableImage*> boundaries;
 
 	static void Initialize();
 
@@ -24,11 +24,11 @@ public:
 
 	static void AddPhysicsBody(GameObject* physicsBody);
 
-	static void RemovePhysicsBody(GameObject physicsBody);
+	static void RemovePhysicsBody(GameObject* physicsBody);
 
 	static void AddBoundary(CollidableImage* boundary);
 
-	static void RemoveBoundaries(CollidableImage boundary);
+	static void RemoveBoundary(CollidableImage* boundary);
 
 	static void ApplyPhysics();
 };

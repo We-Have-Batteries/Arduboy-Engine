@@ -4,6 +4,15 @@ CollidableImage::CollidableImage() : Image() {
     col = Collider();
 }
 
+CollidableImage::CollidableImage(float x, float y, uint8_t flags, 
+uint8_t colWidth, uint8_t colHeight, int colOffsetX, int colOffsetY,  uint8_t* imgPtr) : Image(imgPtr, x, y) {
+    col = Collider(colWidth, colHeight, colOffsetX, colOffsetY);
+    this->image = imgPtr;
+    SetX(x);
+    SetY(y);
+    this->flags = flags;
+}
+
 CollidableImage::CollidableImage(float x, float y, uint8_t flags, Collider col, uint8_t* imgPtr) : Image(imgPtr, x, y) {
     this->col = col;
     this->image = imgPtr;

@@ -109,14 +109,44 @@ public:
   }
   */
 
-  T operator[](int index) {
+  T& operator[](int index) {
     if (index >= 0 && index < currentIndex) {
       return arr[index];
     }
-    if (index > currentIndex && index < size) {
-      return NULL;
+
+    // Exception handling disabled on embedded systems, so i'm just gonna crash!
+    // throw OutOfBoundsException(index);
+    // return arr[0];
+    return arr[size+1];
+  }
+
+  /// Uses selection sort to put the objects in ascending order
+  void AscentionSort(bool (*XLessThanY)(T, T)){
+    for (int i = 0; i < currentIndex; i++){
+      int smallestIndex = i;
+      for (int j = i; j < currentIndex; j++){
+        if (XLessThanY(arr[j], arr[smallestIndex])){
+          smallestIndex = j;
+        }
+      }
+      T oldThing = arr[i];
+      arr[i] = arr[smallestIndex];
+      arr[smallestIndex] = oldThing;
     }
-    return NULL;
+  }
+
+  void DescentionSort(bool (&XLessThanY)(T, T)){
+    for (int i = 0; i < currentIndex; i++){
+      int largestIndex = i;
+      for (int j = i; j < currentIndex; j++){
+        if (!XLessThanY(arr[j], arr[largestIndex])){
+          largestIndex = j;
+        }
+      }
+      T oldThing = arr[i];
+      arr[i] = arr[largestIndex];
+      arr[largestIndex] = oldThing;
+    }
   }
 
   // thing here

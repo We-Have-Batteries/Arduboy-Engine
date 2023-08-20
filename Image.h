@@ -14,11 +14,21 @@ public:
   /// Trigger
   /// Kinematic -> Kinematic means to be able to receive force. Will still travel according to rigidbody speed
   /// ReceivesGravity
+  /// PhysicsEnabled
   /// NONE
   /// NONE
+  /// NONE
+  uint8_t flags;
+  /// Available values:
   /// 17th bit for x: is it positive (1) or negative (0)
   /// 17th bit for y: is it positive (1) or negative (0)
-  uint8_t flags;
+  /// 17th bit for xSpeed: is it positive (1) or negative (0)
+  /// 17th bit for ySpeed: is it positive (1) or negative (0)
+  /// NONE
+  /// NONE
+  /// NONE
+  /// NONE
+  uint8_t signStorage;
 
   Image();
 
@@ -35,6 +45,42 @@ public:
   
   /// Position is only accurate up to 2 decimals. Further decimals are truncated
   void SetY(float position);
+
+  bool IsActive(){
+    return flags & 1 << 7;
+  }
+
+  bool IsTrigger(){
+    return flags & 1 << 6;
+  }
+
+  bool IsKinematic() { 
+    return flags & 1 << 5;
+  }
+
+  bool ReceivesGravity(){
+    return flags & 1 << 4;
+  }
+
+  bool PhysicsEnabled(){
+    return flags & 1 << 3;
+  }
+
+  bool IsMovingRight(){
+    return signStorage & 1 << 5;
+  }
+
+  bool IsMovingLeft(){
+    return !(signStorage & 1 << 5);
+  }
+
+  bool IsMovingUp(){
+    return !(signStorage & 1 << 4);
+  }
+
+  bool IsMovingDown(){
+    return signStorage & 1 << 4;
+  }
     
   /// Called at the start of the object's instantiation
   virtual void Start();
@@ -56,6 +102,10 @@ public:
 
   /// Called after the physics tick determines that an object has collided with something
   virtual void OnCollision(CollidableImage other);
+
+  virtual void SetVelocity(float xSpeed, float ySpeed);
+  virtual void SetXSpeed(float xSpeed);
+  virtual void SetYSpeed(float ySpeed);
 
 protected:
   uint16_t x;

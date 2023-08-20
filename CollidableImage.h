@@ -10,6 +10,9 @@ public:
 
   CollidableImage();
 
+  CollidableImage(float x, float y, uint8_t flags, 
+  uint8_t colWidth, uint8_t colHeight, int colOffsetX, int ColOffsetY, uint8_t* imgPtr);
+
   CollidableImage(float x, float y, uint8_t flags, Collider col, uint8_t* imgPtr);
 
   bool IsOnScreen();

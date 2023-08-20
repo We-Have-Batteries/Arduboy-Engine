@@ -1,7 +1,7 @@
 #include "Physics.h"
 
-Vector<GameObject*> Physics::physicsBodies;
-Vector<CollidableImage*> Physics::boundaries;
+ResizingArray<GameObject*> Physics::physicsBodies = ResizingArray<GameObject*>(5);
+ResizingArray<CollidableImage*> Physics::boundaries = ResizingArray<CollidableImage*>(5);
 
 void Physics::Initialize() {
 	//pairs.reserve(16);
@@ -13,10 +13,10 @@ void Physics::Initialize() {
 		pairs[i] = nullptr;
 	}
   */
-	for (uint16_t i = 0; i < physicsBodies.size(); i++) {
+	for (uint16_t i = 0; i < physicsBodies.GetSize(); i++) {
 		physicsBodies[i] = nullptr;
 	}
-	for (uint16_t i = 0; i < boundaries.size(); i++) {
+	for (uint16_t i = 0; i < boundaries.GetSize(); i++) {
 		boundaries[i] = nullptr;
 	}
 }
@@ -45,48 +45,47 @@ void Physics::ClearPairs() {
 
 void Physics::AddPhysicsBody(GameObject* physicsBody) {
 	//std::cout << "Adding physics body\n";
-	physicsBodies.push_back(physicsBody);
+	physicsBodies.Push(physicsBody);
 }
 
-void Physics::RemovePhysicsBody(GameObject physicsBody) {
-	for (int i = 0; i < physicsBodies.size(); i++) {
-		if (physicsBodies[i] == &physicsBody) {
-			physicsBodies.remove(i);
+void Physics::RemovePhysicsBody(GameObject* physicsBody) {
+	for (int i = 0; i < physicsBodies.GetSize(); i++) {
+		if (physicsBodies[i] == physicsBody) {
+			physicsBodies.Remove(physicsBodies[i]);
 		}
 	}
 }
 
 void Physics::AddBoundary(CollidableImage* boundary) {
-	boundaries.push_back(boundary);
+	boundaries.Push(boundary);
 }
 
-void Physics::RemoveBoundaries(CollidableImage boundary) {
-	for (int i = 0; i < boundaries.size(); i++) {
-		if (boundaries[i] == &boundary) {
-			boundaries.remove(i);
+void Physics::RemoveBoundary(CollidableImage* boundary) {
+	for (int i = 0; i < boundaries.GetSize(); i++) {
+		if (boundaries[i] == boundary) {
+			boundaries.Remove(boundaries[i]);
 		}
 	}
 }
 
 
 void Physics::ApplyPhysics() {
-	// Sorts the physics bodies based on who is below who
-	//if (physicsBodies.size() > 1)
-		//std::sort(physicsBodies.begin(), physicsBodies.end(), GameObject::BelowObject);
-    //ace_sorting::shellSortKnuth(physicsBodies, physicsBodies.size(), [](GameObject* a, GameObject* b) { return a->GetY() > b->GetY(); });
-  // Sorts the boundaries based on who is below who
-	//if (boundaries.size() > 1)
-		//std::sort(boundaries.begin(), boundaries.end(), GameObject::BelowObject);
-    //ace_sorting::shellSortKnuth(physicsBodies, physicsBodies.size(), GameObject::BelowObject);
+	// Starting from bottom to top for physics bodies, 
+  // compare the bottom most physics body with the top most boundary
+  // If the lowest object would hit any of the boundary objects, move it as far as it can
 
-  //Sort arrays here
+  // Maybe change to store only a single array of lowest tiered objects and check booleans
+  // At the end of the day, it should be the lowest object moving down, then the one above it checking if
+  // it would run into the ones below it. If at any point they would, stop them at the point of contact.
+
+  // Do the same for objects moving to the right and objects moving to the left 
     
 	// For all physics objects
-	for (int i = 0; i < physicsBodies.size(); i++) {
+	for (int i = 0; i < physicsBodies.GetSize(); i++) {
 		//std::cout << "Body[" << i << "] y coordinate: " << physicsBodies[i]->GetY() << "\n";
 
 		// For all boundaries
-		for (int j = 0; j < boundaries.size(); j++) {
+		for (int j = 0; j < boundaries.GetSize(); j++) {
 
 		}
 

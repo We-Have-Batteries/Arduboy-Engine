@@ -12,7 +12,7 @@
 #include "MapEditor.h"
 #include "Setup.h"
 #include "ResizingArray.h"
-#include "string.h"
+// #include "string.h"
 #include <Arduboy2.h>
 
 
@@ -79,6 +79,7 @@ ResizingArray<int*> intResizeArr(5);
 bool nextFrame = false;
 
 void loop() {
+  // nextFrame = true;
   if (!nextFrame){
     Setup::arduboy.pollButtons();
     if (Setup::arduboy.pressed(RIGHT_BUTTON)) nextFrame = true;
@@ -125,22 +126,22 @@ void loop() {
   // else if (Input::GetKey(Input::UP))
   //   Setup::tinyfont.print(F("UP IS BEING HELD DOWN\n"));
 
-  if (Input::GetKeyDown(Input::UP) && counter < 29){
-    int* tempPtr = new int;
-    *tempPtr = (counter+1) * 10;
+  // if (Input::GetKeyDown(Input::UP) && counter < 29){
+  //   int* tempPtr = new int;
+  //   *tempPtr = (counter+1) * 10;
 
-    Setup::tinyfont.print(F("Adding address: "));
-    Setup::tinyfont.print(Setup::PtrToInt(tempPtr));
-    Setup::tinyfont.print(F("\n"));
+  //   Setup::tinyfont.print(F("Adding address: "));
+  //   Setup::tinyfont.print(Setup::PtrToInt(tempPtr));
+  //   Setup::tinyfont.print(F("\n"));
     
-    intResizeArr.Push(tempPtr);
-    counter++;
-  }
+  //   intResizeArr.Push(tempPtr);
+  //   counter++;
+  // }
 
-  if (Input::GetKeyDown(Input::DOWN) && counter > 1){
-    intResizeArr.Remove(intResizeArr[0]);
-    counter--;
-  }
+  // if (Input::GetKeyDown(Input::DOWN) && counter > 1){
+  //   intResizeArr.Remove(intResizeArr[0]);
+  //   counter--;
+  // }
 
   // Collider col = Collider();
   // Image img = Image(); // 9 bytes -> can have 118 objects in memory AT MOST at one time
@@ -165,12 +166,16 @@ void loop() {
   // temp.setStorage(storage, 30, 5);
   // temp.push_back(5);
 
-  Setup::tinyfont.print(F("AS: "));
-  Setup::tinyfont.print(intResizeArr.GetSize());
-  Setup::tinyfont.print(F(", CI: "));
-  Setup::tinyfont.print(intResizeArr.GetCurIndex());
+  // Setup::tinyfont.print(F("AS: "));
+  // Setup::tinyfont.print(intResizeArr.GetSize());
+  // Setup::tinyfont.print(F(", CI: "));
+  // Setup::tinyfont.print(intResizeArr.GetCurIndex());
   Setup::tinyfont.print(F(", FM: "));
   Setup::tinyfont.print(Setup::FreeMemory(2560));
+  Setup::tinyfont.print(F("\n"));
+
+  Setup::tinyfont.print(F("Size of image: "));
+  Setup::tinyfont.print(sizeof(Image));
   Setup::tinyfont.print(F("\n"));
 
   for (int i = 0; i < GameWorld::worldObjects.size(); i++){
